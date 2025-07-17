@@ -11,7 +11,7 @@ import matplotlib.colors as mcolors
 import numpy as np
 import calendar
 import json
-# from plotly_calplot import calplot
+# from plotly_calplot import calplot as cp
 
 # ---------------------------
 # Page Configuration
@@ -120,7 +120,7 @@ with tab1:
             Keywords: [A comma-separated list of 3-5 key topics.]
             """
             try:
-                response = requests.post("http://localhost:11434/api/generate", json={"model": "llama3", "prompt": prompt}, stream=True)
+                response = requests.post("http://localhost:11434/api/generate", json={"model": "llama3.1:8b", "prompt": prompt}, stream=True)
                 response.raise_for_status()
                 full_reply = "".join(json.loads(line.decode("utf-8")).get("response", "") for line in response.iter_lines() if line)
 
@@ -403,5 +403,5 @@ with tab4:
                         if ':' in line:
                             key, value = line.split(':', 1)
                             st.markdown(f"**{key.strip()}:** {value.strip()}")
-                if pd.notna(row['Linked Goals']) and row['Linked Goals']:
+                if 'Linked Goals' in row and pd.notna(row['Linked Goals']) and row['Linked Goals']:
                     st.markdown(f"**🔗 Linked Goals:** {row['Linked Goals']}")
